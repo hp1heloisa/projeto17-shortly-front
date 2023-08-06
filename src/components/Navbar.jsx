@@ -1,39 +1,56 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import short from "../assets/twemoji_shorts.png"
 
-export default function NavBar() {
+export default function NavBar({info, setInfo}) {
     const navigate = useNavigate();
-    let [info, setInfo] = useState([]);
 
-    function NavTop() {
-        const dados = JSON.parse(localStorage.getItem('dataShortly'));
-        if (!dados) {
-            return(
-                <DivAcesso>
-                    <div>
-                        <span onClick={() => navigate('/login')}>Entrar</span>
-                        <span onClick={() => navigate('/signup')}>Cadastrar-se</span>
-                    </div>
-                </DivAcesso>
-            )
-        } else{
-            console.log(dados.token)
+    const dados = JSON.parse(localStorage.getItem('dataShortly'));
+
+    useEffect(() => {
+        if (dados) {
             axios.get(`${import.meta.env.VITE_API_URL}/users/me`, { headers: {'Authorization': dados.token} })
                  .then(res => {
                             console.log(res.data);
                             setInfo(res.data);
                  })
                  .catch(erro => alert(erro.response.data));
+        }
+    }, []);
+
+    function logOut() {
+        axios.delete(`${import.meta.env.VITE_API_URL}/logout`, { headers: {'Authorization': dados.token} })
+             .then(res => {
+                    console.log(res.data);
+                    localStorage.removeItem('dataShortly');
+                    alert('Até a próxima');
+                    navigate('/');
+             })
+             .catch(erro => alert(erro.response.data));
+    }
+
+    function NavTop() {
+        if (!dados) {
             return(
                 <DivAcesso>
-                    <span>Seja bem-vindo(a), </span>
+                    <div className="deslogado">
+                        <span onClick={() => navigate('/login')} className="verde">Entrar</span>
+                        <span onClick={() => navigate('/signup')} className="cinza">Cadastrar-se</span>
+                    </div>
+                </DivAcesso>
+            )
+        } else{
+            console.log(dados.token)
+            console.log(info.name);
+            return(
+                <DivAcesso>
+                    <span className="verde">Seja bem-vindo(a), {info.name}</span>
                     <div>
-                        <span onClick={() => navigate('/login')}>Home</span>
-                        <span onClick={() => navigate('/signup')}>Ranking</span>
-                        <span onClick={() => navigate('/signup')}>Sair</span>
+                        <span onClick={() => navigate('/initial')} className="cinza">Home</span>
+                        <span onClick={() => navigate('/')} className="cinza">Ranking</span>
+                        <span onClick={logOut} className="cinza">Sair</span>
                     </div>
                 </DivAcesso>
             )
@@ -69,6 +86,7 @@ const DivLogo = styled.div`
         line-height: 80px;
         letter-spacing: 0em;
     }
+    cursor: pointer;
 `
 
 const DivAcesso = styled.div`
@@ -83,16 +101,20 @@ const DivAcesso = styled.div`
         font-weight: 400;
         line-height: 18px;
         letter-spacing: 0em;
+        cursor: pointer;
     }
     div{
         display: flex;
         gap: 20px;
         justify-content: right;
-        :nth-child(1){
+    }
+    .verde{
             color: #5D9040;
-        }
-        :nth-child(2){
+    }
+    .cinza{
             color: #9C9C9C;
-        }
+    }
+    .deslogado{
+        width: 100%;
     }
 `

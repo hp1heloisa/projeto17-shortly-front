@@ -20,7 +20,6 @@ export default function HomePage() {
 
     return(
         <HomeContainer>
-            <NavBar />
             <DivRanking>
                 <img src={trofeu} alt="trofeu" />
                 <div>
@@ -55,6 +54,7 @@ const DivRanking = styled.div`
         line-height: 45px;
         letter-spacing: 0em;
         margin-bottom: 50px;
+        cursor: pointer;
     }
     img{
         width: 200px;

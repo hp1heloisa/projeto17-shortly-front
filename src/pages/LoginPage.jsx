@@ -24,7 +24,6 @@ export default function LoginPage() {
 
     return (
         <LoginContainer>
-            <NavBar />
             <form onSubmit={e => signIn(e)}>
                 <input type="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} required/>
                 <input type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} required/>
@@ -35,18 +34,20 @@ export default function LoginPage() {
 }
 
 const LoginContainer = styled.div`
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 100px;
+    padding-top: 80px;
     form{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 30px;
         input{
+            box-sizing: border-box;
             font-family: Lexend Deca;
             width: 700px;
-            height: 30px;
+            height: 50px;
             border-radius: 12px;
             border: 1px;
             border: 1px solid #78B15940;
@@ -57,14 +58,15 @@ const LoginContainer = styled.div`
         button{
             font-family: Lexend Deca;
             color: white;
-            font-size: 20px;
+            font-size: 15px;
             width: 182px;
-            height: 60px;
+            height: 50px;
             border-radius: 12px;
             border: none;
             background-color: #78B159;
             margin-top: 20px;
             margin-bottom: 20px;
+            cursor: pointer;
         }
     }
 `

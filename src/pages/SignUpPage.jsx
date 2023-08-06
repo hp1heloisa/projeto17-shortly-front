@@ -28,7 +28,6 @@ export default function SignUpPage() {
 
     return(
         <SignUpContainer>
-            <NavBar />
             <form onSubmit={e => signUp(e)}>
                 <input type="text" placeholder="Nome" value={name} onChange={e => setName(e.target.value)} required/>
                 <input type="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} required/>
@@ -43,16 +42,17 @@ export default function SignUpPage() {
 const SignUpContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 100px;
+    margin-top: 60px;
     form{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 30px;
         input{
+            box-sizing: border-box;
             font-family: Lexend Deca;
             width: 700px;
-            height: 30px;
+            height: 50px;
             border-radius: 12px;
             border: 1px solid #78B15940;
             padding: 15px;
@@ -62,14 +62,15 @@ const SignUpContainer = styled.div`
         button{
             font-family: Lexend Deca;
             color: white;
-            font-size: 20px;
+            font-size: 15px;
             width: 182px;
-            height: 60px;
+            height: 50px;
             border-radius: 12px;
             border: none;
             background-color: #78B159;
             margin-top: 20px;
             margin-bottom: 20px;
+            cursor: pointer;
         }
     }
 `
