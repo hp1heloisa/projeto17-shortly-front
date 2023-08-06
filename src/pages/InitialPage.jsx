@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 export default function InitialPage({info, setInfo}){
     let [url, setUrl] = useState('');
     let [render, setRender] = useState([]);
+    const navigate = useNavigate();
     console.log(info)
     const dados = JSON.parse(localStorage.getItem('dataShortly'));
     useEffect(() => {
@@ -40,6 +42,11 @@ export default function InitialPage({info, setInfo}){
         }
     }
 
+    function goShort(shortUrl) {
+        console.log(shortUrl);
+        axios.get(`${import.meta.env.VITE_API_URL}/urls/open/${shortUrl}`);
+    }
+
     if (info.length == 0){
         return(
             <InitialContainer>
@@ -61,8 +68,8 @@ export default function InitialPage({info, setInfo}){
                 <div>
                     {info.shortenedUrls.map(url => <DivUrl>
                             <div className="info">
-                                <span>{url.url}</span>
-                                <span>{url.shortUrl}</span>
+                                <span className="url" onClick={() => window.location.assign(url.url)}>{url.url}</span>
+                                <span className="url" onClick={() => window.location.assign(url.url)}>{url.shortUrl}</span>
                                 <span>Quantidade de visitantes: {url.visitCount}</span>
                             </div>
                             <div className="lixo" onClick={() => deletaUrl(url.id)}><ion-icon name="trash-outline"></ion-icon></div>
@@ -138,6 +145,10 @@ const DivUrl = styled.div`
         background-color: #78B159;
         height: 40px;;
         color: white;
+        .url:hover{
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
     .lixo{
         display: flex;
