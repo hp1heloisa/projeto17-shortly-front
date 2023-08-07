@@ -42,9 +42,11 @@ export default function InitialPage({info, setInfo}){
         }
     }
 
-    function goShort(shortUrl) {
+    function goShort(shortUrl, url) {
         console.log(shortUrl);
-        axios.get(`${import.meta.env.VITE_API_URL}/urls/open/${shortUrl}`);
+        axios.get(`${import.meta.env.VITE_API_URL}/urls/open/${shortUrl}`)
+             .then(res => window.location.assign(url))
+             .catch(erro => alert(erro.response.data));
     }
 
     if (info.length == 0){
@@ -68,8 +70,8 @@ export default function InitialPage({info, setInfo}){
                 <div>
                     {info.shortenedUrls.map(url => <DivUrl>
                             <div className="info">
-                                <span className="url" onClick={() => window.location.assign(url.url)}>{url.url}</span>
-                                <span className="url" onClick={() => window.location.assign(url.url)}>{url.shortUrl}</span>
+                                <span className="url" onClick={() => goShort(url.shortUrl, url.url)}>{url.url}</span>
+                                <span className="url" onClick={() => goShort(url.shortUrl, url.url)}>{url.shortUrl}</span>
                                 <span>Quantidade de visitantes: {url.visitCount}</span>
                             </div>
                             <div className="lixo" onClick={() => deletaUrl(url.id)}><ion-icon name="trash-outline"></ion-icon></div>
